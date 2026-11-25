@@ -1,0 +1,97 @@
+{
+  "dataset_rows": 552,
+  "unique_rows": 138,
+  "duplicate_rows_detected": 414,
+  "classes": [
+    "10-10-10",
+    "10-26-26",
+    "14-14-14",
+    "14-35-14",
+    "15-15-15",
+    "17-17-17",
+    "20-20",
+    "28-28",
+    "DAP",
+    "Potassium Chloride",
+    "Potassium Sulfate",
+    "Superphosphate",
+    "TSP",
+    "Urea"
+  ],
+  "cv_folds": 3,
+  "selected_model": "RandomForest",
+  "benchmarks": [
+    {
+      "model": "RandomForest",
+      "cv_accuracy_mean": 100.0,
+      "cv_accuracy_std": 0.0,
+      "holdout_accuracy": 100.0,
+      "holdout_macro_f1": 100.0,
+      "unique_row_holdout_accuracy": 89.29
+    },
+    {
+      "model": "ExtraTrees",
+      "cv_accuracy_mean": 99.32,
+      "cv_accuracy_std": 0.96,
+      "holdout_accuracy": 100.0,
+      "holdout_macro_f1": 100.0,
+      "unique_row_holdout_accuracy": 85.71
+    },
+    {
+      "model": "GradientBoosting",
+      "cv_accuracy_mean": 98.41,
+      "cv_accuracy_std": 1.16,
+      "holdout_accuracy": 100.0,
+      "holdout_macro_f1": 100.0,
+      "unique_row_holdout_accuracy": 75.0
+    },
+    {
+      "model": "LogisticRegression",
+      "cv_accuracy_mean": 92.06,
+      "cv_accuracy_std": 2.5,
+      "holdout_accuracy": 90.09,
+      "holdout_macro_f1": 87.84,
+      "unique_row_holdout_accuracy": 64.29
+    }
+  ],
+  "feature_importance": [
+    {
+      "feature": "Phosphorous",
+      "importance": 25.51
+    },
+    {
+      "feature": "Nitrogen",
+      "importance": 20.97
+    },
+    {
+      "feature": "Potassium",
+      "importance": 14.99
+    },
+    {
+      "feature": "Crop_Type",
+      "importance": 11.81
+    },
+    {
+      "feature": "Humidity",
+      "importance": 8.38
+    },
+    {
+      "feature": "Moisture",
+      "importance": 6.78
+    },
+    {
+      "feature": "Temperature",
+      "importance": 6.67
+    },
+    {
+      "feature": "Soil_Type",
+      "importance": 4.89
+    }
+  ],
+  "ood_p99_distance": 2.17,
+  "holdout_macro_avg": {
+    "precision": 100.0,
+    "recall": 100.0,
+    "f1": 100.0
+  }
+}

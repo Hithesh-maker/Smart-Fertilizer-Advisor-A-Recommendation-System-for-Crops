@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SSNM Field Advisor — Precision Crop &amp; Fertilizer Guidance</title>
+  <link rel="icon" href="/static/images/favicon.ico" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="theme-color" content="#174e2d" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fafbf7;
+      --surface: #ffffff;
+      --surface-soft: #f2f6f0;
+      --surface-warm: #fef9ee;
+      --border: #dfe7dd;
+      --text: #1c2b21;
+      --muted: #5a6c60;
+      --forest: #174e2d;
+      --leaf: #2e7d32;
+      --leaf-light: #e6f4ea;
+      --amber: #b45309;
+      --amber-bg: #fef3c7;
+      --crimson: #b91c1c;
+      --crimson-bg: #fee2e2;
+      --blue: #1d4ed8;
+      --blue-bg: #eff6ff;
+      --shadow-sm: 0 2px 8px rgba(20, 48, 30, 0.06);
+      --shadow-md: 0 12px 32px rgba(20, 48, 30, 0.09);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Plus Jakarta Sans', 'Nunito', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* Top Navigation */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 800;
+      font-size: 1.12rem;
+      color: var(--forest);
+    }
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--forest), var(--leaf));
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--forest); }
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+    }
+    .lang-select {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.3rem 0.75rem;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--forest);
+      background: var(--surface-soft);
+      cursor: pointer;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.28rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      background: var(--leaf-light);
+      color: var(--forest);
+      border: 1px solid #cce7d3;
+    }
+    .pill.offline {
+      background: var(--amber-bg);
+      color: var(--amber);
+      border-color: #fde68a;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: #16a34a; }
+    .pill.offline .dot { background: #d97706; }
+
+    /* Hero */
+    .hero {
+      background:
+        linear-gradient(105deg, rgba(16, 48, 28, 0.88) 0%, rgba(23, 78, 45, 0.74) 55%, rgba(23, 78, 45, 0.45) 100%),
+        url('/static/images/farm_background.jpg') center/cover no-repeat;
+      color: #ffffff;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+    .hero-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      margin-bottom: 0.9rem;
+    }
+    .hero h1 {
+      font-size: clamp(1.9rem, 3.6vw, 2.85rem);
+      line-height: 1.15;
+      margin: 0 0 0.85rem;
+      font-weight: 800;
+    }
+    .hero p {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.92);
+      max-width: 58ch;
+      margin: 0 0 1.5rem;
+    }
+    .hero-card {
+      background: rgba(255, 255, 255, 0.97);
+      color: var(--text);
+      border-radius: var(--radius);
+      padding: 1.35rem;
+      box-shadow: var(--shadow-md);
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-top: 0.85rem;
+    }
+    .stat-box {
+      background: var(--surface-soft);
+      border-radius: 12px;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+    }
+    .stat-num { font-size: 1.35rem; font-weight: 800; color: var(--forest); }
+    .stat-lbl { font-size: 0.76rem; color: var(--muted); font-weight: 600; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      border: 0;
+      border-radius: 10px;
+      padding: 0.68rem 1.2rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform 0.12s ease, background 0.15s ease;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: #ffffff; color: var(--forest); box-shadow: var(--shadow-md); }
+    .btn-green { background: var(--forest); color: #ffffff; box-shadow: var(--shadow-sm); }
+    .btn-green:hover { background: #1e623a; }
+    .btn-outline { background: transparent; color: #fff; border: 1.5px solid rgba(255, 255, 255, 0.5); }
+    .btn-soft {
+      background: var(--surface-soft);
+      color: var(--forest);
+      border: 1px solid var(--border);
+      padding: 0.45rem 0.85rem;
+      font-size: 0.82rem;
+    }
+    .btn-soft:hover { background: #e5eee3; }
+    .btn-whatsapp { background: #15803d; color: #fff; padding: 0.48rem 0.9rem; font-size: 0.82rem; }
+
+    /* Containers & Grids */
+    .container { max-width: 1280px; margin: 0 auto; padding: 2.25rem 1.5rem; }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .section-head h2 { margin: 0; font-size: 1.55rem; color: var(--forest); }
+    .section-head p { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.92rem; }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 1.06fr 1fr;
+      gap: 1.35rem;
+      align-items: start;
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.35rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .preset-strip { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1rem; }
+    .chip {
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 0.35rem 0.78rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .chip:hover { border-color: var(--leaf); background: var(--leaf-light); }
+    .chip.active { background: var(--forest); color: #fff; border-color: var(--forest); }
+
+    .soil-pills { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.4rem; margin-top: 0.35rem; }
+    .soil-pill {
+      padding: 0.5rem 0.35rem;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--muted);
+    }
+    .soil-pill.active { border-color: var(--leaf); background: var(--leaf-light); color: var(--forest); }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-top: 0.9rem; }
+    .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-top: 0.85rem; }
+    .field {
+      background: #fcfdfb;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.65rem 0.8rem;
+    }
+    .field-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; }
+    .field label { font-size: 0.8rem; font-weight: 700; color: var(--text); }
+    .field input[type="number"], .field input[type="text"], .field select {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.32rem 0.48rem;
+      font: inherit;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--forest);
+      background: #fff;
+    }
+    .field input[type="number"] { width: 78px; text-align: right; }
+    .field select, .field input[type="text"] { width: 100%; margin-top: 0.15rem; }
+    .field input[type="range"] { width: 100%; accent-color: var(--leaf); cursor: pointer; }
+
+    /* Live Ratio Strip */
+    .npk-preview {
+      margin-top: 0.9rem;
+      background: var(--surface-soft);
+      border-radius: 12px;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid var(--border);
+    }
+    .ratio-bar { height: 10px; border-radius: 999px; overflow: hidden; display: flex; background: #dce5dc; margin: 0.4rem 0; }
+    .ratio-n { background: #16a34a; transition: width 0.25s; }
+    .ratio-p { background: #d97706; transition: width 0.25s; }
+    .ratio-k { background: #2563eb; transition: width 0.25s; }
+
+    /* Weather Banner */
+    .weather-box {
+      margin-top: 0.9rem;
+      padding: 0.8rem 0.95rem;
+      border-radius: 12px;
+      background: var(--blue-bg);
+      border: 1px solid #bfdbfe;
+      font-size: 0.84rem;
+    }
+    .weather-risk-HIGH { background: var(--crimson-bg); border-color: #fecaca; color: #7f1d1d; }
+    .weather-risk-MODERATE { background: var(--amber-bg); border-color: #fde68a; color: #78350f; }
+    .weather-risk-LOW { background: var(--leaf-light); border-color: #bbf7d0; color: var(--forest); }
+
+    /* Prescription Sheet */
+    .rx-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.15rem;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #e8f5e9 0%, #f4faf5 100%);
+      border: 1.5px solid #b7dfc0;
+    }
+    .rx-title { font-size: 1.75rem; font-weight: 800; color: var(--forest); margin: 0.15rem 0; }
+    .rx-badge { background: var(--forest); color: #fff; font-weight: 700; font-size: 0.82rem; padding: 0.32rem 0.72rem; border-radius: 8px; white-space: nowrap; }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.65rem;
+      margin-top: 0.9rem;
+    }
+    .calc-card {
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.75rem;
+    }
+    .calc-val { font-size: 1.15rem; font-weight: 800; color: var(--forest); }
+    .calc-lbl { font-size: 0.74rem; color: var(--muted); font-weight: 600; }
+
+    .timeline { display: grid; gap: 0.55rem; margin-top: 0.65rem; }
+    .stage-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.65rem 0.8rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 0.83rem;
+    }
+    .stage-row.current {
+      border-color: var(--leaf);
+      background: var(--leaf-light);
+    }
+
+    .dosage-box {
+      margin-top: 0.85rem;
+      padding: 0.8rem 0.95rem;
+      background: var(--surface-warm);
+      border-left: 4px solid #d97706;
+      border-radius: 10px;
+      font-size: 0.86rem;
+    }
+    .ood-banner {
+      margin-bottom: 0.85rem;
+      padding: 0.8rem 0.95rem;
+      background: var(--crimson-bg);
+      border: 1.5px solid #fca5a5;
+      border-radius: 12px;
+      color: #7f1d1d;
+      font-size: 0.85rem;
+    }
+
+    .diag-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.65rem; margin-top: 0.65rem; }
+    .diag-card { border: 1px solid var(--border); border-radius: 12px; padding: 0.65rem; background: #fff; }
+    .badge-status { display: inline-block; font-size: 0.7rem; font-weight: 800; padding: 0.14rem 0.45rem; border-radius: 999px; text-transform: uppercase; }
+    .st-Deficient { background: var(--amber-bg); color: var(--amber); }
+    .st-Optimal { background: var(--leaf-light); color: var(--forest); }
+    .st-Excess { background: var(--crimson-bg); color: var(--crimson); }
+
+    .prog-track { height: 8px; background: #e5ece6; border-radius: 999px; overflow: hidden; margin-top: 0.25rem; }
+    .prog-fill { height: 100%; background: linear-gradient(90deg, var(--leaf), #43a047); border-radius: 999px; }
+
+    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0.95rem; }
+    .fert-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1rem; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    th, td { text-align: left; padding: 0.6rem 0.55rem; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 700; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    footer { background: var(--forest); color: rgba(255, 255, 255, 0.9); padding: 1.75rem 1.5rem; margin-top: 2rem; font-size: 0.86rem; }
+
+    @media (max-width: 980px) {
+      .hero-inner, .workspace { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .diag-grid, .calc-grid, .form-grid-3 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 580px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .soil-pills { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media print {
+      .navbar, .hero, #plots, #batch, #guide, #benchmarks, #logbook, footer, #predictForm button, .preset-strip, .rx-actions { display: none !important; }
+      .workspace { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="#" class="brand">
+        <span class="brand-mark">SN</span>
+        <span data-i18n="brandTitle">SSNM Field Advisor</span>
+      </a>
+      <div class="nav-links">
+        <a href="#advisor" data-i18n="navAdvisor">Advisor Tool</a>
+        <a href="#plots" data-i18n="navPlots">Farm Plots</a>
+        <a href="#batch" data-i18n="navBatch">Batch CSV</a>
+        <a href="#guide" data-i18n="navGuide">Nutrient Guide</a>
+        <a href="#logbook" data-i18n="navLogbook">Logbook</a>
+      </div>
+      <div class="nav-controls">
+        <select id="langSelect" class="lang-select" aria-label="Select Language">
+          <option value="en">English</option>
+          <option value="ta">தமிழ் (Tamil)</option>
+          <option value="hi">हिन्दी (Hindi)</option>
+          <option value="te">తెలుగు (Telugu)</option>
+          <option value="kn">ಕನ್ನಡ (Kannada)</option>
+          <option value="ml">മലയാളം (Malayalam)</option>
+        </select>
+        <span class="pill" id="networkPill"><span class="dot"></span> Online</span>
+        <button type="button" id="syncQueueBtn" class="btn-soft" style="display:none;" onclick="syncOfflineQueue()">Sync Queued (0)</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="hero-tag" data-i18n="heroTag">Site-Specific Nutrient Management</span>
+        <h1 data-i18n="heroHeading">Right Fertilizer, Exact Bag Count, Based on Your Real Soil Reading.</h1>
+        <p data-i18n="heroSub">
+          Calculate exact kg/acre dosage, 45/50 kg bag counts, split-application schedules, soil pH corrections, organic alternatives, and rain-runoff alerts — online or offline in your field.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
+          <a href="#advisor" class="btn btn-primary" data-i18n="heroCta">Open Nutrient Calculator ↓</a>
+          <a href="#batch" class="btn btn-outline" data-i18n="heroBatch">Upload Lab CSV</a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <strong style="color:var(--forest);" id="navModelStatus">Loading engine...</strong>
+          <span class="pill" id="heroCvPill">Validated</span>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-box"><div class="stat-num" id="statCrops">17</div><div class="stat-lbl">Crops</div></div>
+          <div class="stat-box"><div class="stat-num" id="statFerts">14</div><div class="stat-lbl">Fertilizer Blends</div></div>
+          <div class="stat-box"><div class="stat-num" id="statAcc">--%</div><div class="stat-lbl">Unique-Row Holdout</div></div>
+          <div class="stat-box"><div class="stat-num" id="statLogs">0</div><div class="stat-lbl">Saved Logs</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Advisor Workbench -->
+  <section id="advisor" class="container">
+    <div class="section-head">
+      <div>
+        <h2 data-i18n="workbenchTitle">Field Nutrient Prescription Workbench</h2>
+        <p data-i18n="workbenchSub">Adjust field sensors, land size, and soil pH to generate an accurate bag-level prescription.</p>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <button type="button" class="btn btn-soft" onclick="resetForm()" data-i18n="btnReset">Reset Defaults</button>
+        <button type="button" class="btn btn-soft" onclick="window.print()" data-i18n="btnPrint">Print Prescription</button>
+      </div>
+    </div>
+
+    <div class="workspace">
+      <!-- Left: Inputs + Weather -->
+      <div class="panel">
+        <div style="font-size:0.78rem;font-weight:700;color:var(--muted);margin-bottom:0.4rem;">SAMPLE FARM SCENARIOS</div>
+        <div class="preset-strip" id="presetBar"></div>
+
+        <form id="predictForm">
+          <div class="form-grid">
+            <div class="field">
+              <label for="plotSelect" data-i18n="lblPlot">Farm Plot (Optional)</label>
+              <select id="plotSelect"><option value="">Ad-hoc / No Plot Selected</option></select>
+            </div>
+            <div class="field">
+              <label for="cropType" data-i18n="lblCrop">Target Crop</label>
+              <select id="cropType" required></select>
+            </div>
+          </div>
+
+          <div style="margin-top:0.85rem;">
+            <label style="font-size:0.8rem;font-weight:700;" data-i18n="lblSoil">Soil Texture</label>
+            <div class="soil-pills" id="soilPills"></div>
+            <input type="hidden" id="soilType" value="Clayey" />
+          </div>
+
+          <div class="form-grid-3">
+            <div class="field">
+              <label for="areaVal" data-i18n="lblArea">Field Size</label>
+              <div style="display:flex;gap:0.35rem;margin-top:0.2rem;">
+                <input id="areaVal" type="number" step="0.1" min="0.05" max="5000" value="2.0" style="width:100%;" />
+                <select id="areaUnit" style="width:92px;margin-top:0;">
+                  <option value="acre">Acres</option>
+                  <option value="hectare">Hectares</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="cropStage" data-i18n="lblStage">Crop Stage</label>
+              <select id="cropStage">
+                <option value="sowing">Sowing / Basal</option>
+                <option value="vegetative">Vegetative</option>
+                <option value="reproductive">Flowering / Fruiting</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="customPrice">Dealer Price (₹/bag)</label>
+              <input id="customPrice" type="number" step="0.5" min="10" max="20000" placeholder="Auto MRP" style="width:100%;margin-top:0.2rem;text-align:left;" />
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <div class="field-top"><label for="temperature" data-i18n="lblTemp">Temperature (°C)</label><input id="temperature" type="number" step="0.5" min="-10" max="60" value="28" required /></div>
+              <input id="temperatureRange" type="range" min="0" max="50" step="0.5" value="28" />
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="humidity" data-i18n="lblHumidity">Humidity (%)</label><input id="humidity" type="number" step="1" min="0" max="100" value="60" required /></div>
+              <input id="humidityRange" type="range" min="0" max="100" step="1" value="60" />
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="moisture" data-i18n="lblMoisture">Soil Moisture (%)</label><input id="moisture" type="number" step="1" min="0" max="100" value="42" required /></div>
+              <input id="moistureRange" type="range" min="0" max="100" step="1" value="42" />
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="soilPh" data-i18n="lblPh">Soil pH (3.5–9.5)</label><input id="soilPh" type="number" step="0.1" min="3.5" max="9.5" value="6.5" required /></div>
+              <input id="soilPhRange" type="range" min="3.5" max="9.5" step="0.1" value="6.5" />
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="nitrogen" data-i18n="lblN">Nitrogen (N)</label><input id="nitrogen" type="number" step="1" min="0" max="300" value="36" required /></div>
+              <input id="nitrogenRange" type="range" min="0" max="150" step="1" value="36" />
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="phosphorous" data-i18n="lblP">Phosphorous (P)</label><input id="phosphorous" type="number" step="1" min="0" max="300" value="10" required /></div>
+              <input id="phosphorousRange" type="range" min="0" max="150" step="1" value="10" />
+            </div>
+            <div class="field" style="grid-column: 1 / -1;">
+              <div class="field-top"><label for="potassium" data-i18n="lblK">Potassium (K)</label><input id="potassium" type="number" step="1" min="0" max="300" value="12" required /></div>
+              <input id="potassiumRange" type="range" min="0" max="150" step="1" value="12" />
+            </div>
+          </div>
+
+          <div class="npk-preview">
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;font-weight:700;">
+              <span>Live Soil N-P-K Balance</span>
+              <span id="npkSummaryText">N: 36 | P: 10 | K: 12</span>
+            </div>
+            <div class="ratio-bar">
+              <div id="barN" class="ratio-n" style="width:62%;"></div>
+              <div id="barP" class="ratio-p" style="width:17%;"></div>
+              <div id="barK" class="ratio-k" style="width:21%;"></div>
+            </div>
+          </div>
+
+          <!-- Rain Check -->
+          <div class="weather-box" id="weatherBox">
+            <div style="display:flex;gap:0.45rem;align-items:center;flex-wrap:wrap;">
+              <strong style="color:var(--forest);">24h Rain-Runoff Check:</strong>
+              <input id="weatherCity" type="text" placeholder="Enter town/district (e.g., Thanjavur)" style="flex:1;min-width:160px;padding:0.35rem 0.6rem;border:1px solid var(--border);border-radius:8px;font:inherit;" />
+              <button type="button" class="btn-soft" onclick="checkCityWeather()">Check Rain</button>
+              <button type="button" class="btn-soft" onclick="checkGpsWeather()">Use GPS</button>
+            </div>
+            <div id="weatherResult" style="margin-top:0.45rem;color:var(--muted);">Optional: checks Open-Meteo 24h forecast before urea/surface application.</div>
+          </div>
+
+          <div id="errorMsg" style="color:var(--crimson);font-size:0.85rem;margin-top:0.65rem;font-weight:600;"></div>
+          <button type="submit" class="btn btn-green" style="width:100%;margin-top:0.85rem;" data-i18n="btnSubmit">
+            Generate Fertilizer Prescription
+          </button>
+        </form>
+      </div>
+
+      <!-- Right: Full Prescription Sheet -->
+      <div class="panel" id="prescriptionPanel">
+        <p style="color:var(--muted);">Loading initial sample prescription...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Farm Plots & Multi-Season N-P-K Recovery -->
+  <section id="plots" class="container" style="padding-top:0.5rem;">
+    <div class="section-head">
+      <div>
+        <h2 data-i18n="plotsTitle">Farm Plots &amp; Multi-Season Tracking</h2>
+        <p>Group soil tests under named fields to track N-P-K recovery across harvests.</p>
+      </div>
+    </div>
+    <div class="workspace">
+      <div class="panel">
+        <h3 style="margin-top:0;color:var(--forest);">Add Farm Plot</h3>
+        <form id="plotForm" class="form-grid" style="margin-top:0.5rem;">
+          <div class="field"><label for="newPlotName">Plot Name</label><input id="newPlotName" type="text" placeholder="e.g., East Paddy Block" required /></div>
+          <div class="field"><label for="newPlotLocation">Village / District</label><input id="newPlotLocation" type="text" placeholder="e.g., Thanjavur" /></div>
+          <div class="field"><label for="newPlotArea">Area (Acres)</label><input id="newPlotArea" type="number" step="0.1" min="0.1" value="2.0" style="width:100%;text-align:left;" required /></div>
+          <div class="field"><label for="newPlotSoil">Primary Soil</label><select id="newPlotSoil"></select></div>
+          <div style="grid-column:1 / -1;"><button type="submit" class="btn btn-green" style="width:100%;">Save Farm Plot</button></div>
+        </form>
+        <div id="plotList" style="margin-top:1rem;display:grid;gap:0.5rem;"></div>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0;color:var(--forest);" id="trendTitle">Multi-Season N-P-K Trend</h3>
+        <div id="plotTrendPanel" style="color:var(--muted);font-size:0.88rem;">
+          Create or select a farm plot to view N-P-K progression across seasons.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Batch CSV Upload -->
+  <section id="batch" class="container" style="padding-top:0.5rem;">
+    <div class="panel">
+      <div class="section-head" style="margin-bottom:0.85rem;">
+        <div>
+          <h2 style="font-size:1.35rem;" data-i18n="batchTitle">Batch CSV Soil-Lab Upload (Agri-Labs &amp; Co-ops)</h2>
+          <p>Upload a CSV with columns: <code>Temperature,Humidity,Moisture,Soil_Type,Crop_Type,Nitrogen,Potassium,Phosphorous</code> (optional: <code>Soil_pH,Area_Acres,Plot_Name</code>).</p>
+        </div>
+        <button type="button" class="btn btn-soft" onclick="downloadSampleCsv()">Download Sample CSV</button>
+      </div>
+      <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+        <input id="batchFile" type="file" accept=".csv,text/csv" />
+        <button type="button" class="btn btn-green" onclick="runBatchUpload(false)">Analyze CSV Batch</button>
+        <button type="button" class="btn btn-soft" onclick="runBatchUpload(true)">Analyze &amp; Download Enriched CSV</button>
+      </div>
+      <div id="batchResults" class="table-wrap" style="margin-top:1rem;"></div>
+    </div>
+  </section>
+
+  <!-- Fertilizer Guide -->
+  <section id="guide" class="container" style="padding-top:0.5rem;">
+    <div class="section-head">
+      <div>
+        <h2 data-i18n="guideTitle">Fertilizer Formulation Guide</h2>
+        <p>14 verified nutrient blends with bag weights and subsidized/indicative MRPs.</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:0.45rem;flex-wrap:wrap;margin-bottom:1rem;" id="guideTabs">
+      <button type="button" class="chip active" data-filter="all">All Blends</button>
+      <button type="button" class="chip" data-filter="N">Nitrogen Focus</button>
+      <button type="button" class="chip" data-filter="P">Phosphorous Focus</button>
+      <button type="button" class="chip" data-filter="K">Potassium &amp; Complete NPK</button>
+    </div>
+    <div class="catalog-grid" id="catalogGrid"></div>
+  </section>
+
+  <!-- Model Transparency -->
+  <section id="benchmarks" class="container" style="padding-top:0.5rem;">
+    <div class="section-head">
+      <div>
+        <h2 data-i18n="benchTitle">Model Transparency &amp; Out-of-Distribution Guardrails</h2>
+        <p>Leakage-free stratified holdout, deduplicated unique-row evaluation, and 1-NN safety scoring.</p>
+      </div>
+    </div>
+    <div class="workspace">
+      <div class="panel table-wrap">
+        <h3 style="margin-top:0;color:var(--forest);">Algorithm Comparison</h3>
+        <div id="benchmarkTable">Loading...</div>
+      </div>
+      <div class="panel">
+        <h3 style="margin-top:0;color:var(--forest);">Feature Drivers</h3>
+        <div id="featureDrivers">Loading...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Field Logbook -->
+  <section id="logbook" class="container" style="padding-top:0.5rem;">
+    <div class="panel">
+      <div class="section-head" style="margin-bottom:0.85rem;">
+        <div>
+          <h2 style="font-size:1.35rem;" data-i18n="logTitle">Field Soil Test Logbook (SQLite)</h2>
+          <p>Search past tests across plots or export all records to CSV.</p>
+        </div>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
+          <input id="logSearch" type="search" placeholder="Search crop, plot, or fertilizer..." style="padding:0.42rem 0.7rem;border:1px solid var(--border);border-radius:8px;font:inherit;font-size:0.84rem;" />
+          <a href="/api/history/export.csv" class="btn btn-soft">Export All CSV</a>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Time</th><th>Plot / Crop</th><th>Area &amp; pH</th><th>Soil N-P-K</th><th>Prescription &amp; Bags</th><th>Conf</th><th></th></tr>
+          </thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div style="max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+      <div><strong>SSNM Field Advisor</strong> — Precision Crop &amp; Nutrient Intelligence</div>
+      <div>Offline-ready PWA • Verified Bag Sizing &amp; Subsidized MRP Reference • Open-Meteo Rain Check</div>
+    </div>
+  </footer>
+
+  <script>
+    const I18N = {
+      en: {
+        speechLang: 'en-IN',
+        brandTitle: 'SSNM Field Advisor',
+        navAdvisor: 'Advisor Tool', navPlots: 'Farm Plots', navBatch: 'Batch CSV', navGuide: 'Nutrient Guide', navLogbook: 'Logbook',
+        heroTag: 'Site-Specific Nutrient Management',
+        heroHeading: 'Right Fertilizer, Exact Bag Count, Based on Your Real Soil Reading.',
+        heroSub: 'Calculate exact kg/acre dosage, 45/50 kg bag counts, split-application schedules, soil pH corrections, organic alternatives, and rain-runoff alerts — online or offline.',
+        heroCta: 'Open Nutrient Calculator ↓', heroBatch: 'Upload Lab CSV',
+        workbenchTitle: 'Field Nutrient Prescription Workbench', workbenchSub: 'Adjust field sensors, land size, and soil pH to generate an accurate bag-level prescription.',
+        btnReset: 'Reset Defaults', btnPrint: 'Print Prescription', btnSubmit: 'Generate Fertilizer Prescription',
+        lblPlot: 'Farm Plot', lblCrop: 'Target Crop', lblSoil: 'Soil Texture', lblArea: 'Field Size', lblStage: 'Crop Stage',
+        lblTemp: 'Temperature (°C)', lblHumidity: 'Humidity (%)', lblMoisture: 'Soil Moisture (%)', lblPh: 'Soil pH (3.5–9.5)',
+        lblN: 'Nitrogen (N)', lblP: 'Phosphorous (P)', lblK: 'Potassium (K)',
+        plotsTitle: 'Farm Plots & Multi-Season Tracking', batchTitle: 'Batch CSV Soil-Lab Upload',
+        guideTitle: 'Fertilizer Formulation Guide', benchTitle: 'Model Transparency & Safety Guardrails', logTitle: 'Field Soil Test Logbook (SQLite)'
+      },
+      ta: {
+        speechLang: 'ta-IN',
+        brandTitle: 'SSNM உர ஆலோசகர்',
+        navAdvisor: 'ஆலோசனை', navPlots: 'பண்ணை நிலங்கள்', navBatch: 'CSV தொகுப்பு', navGuide: 'உர வழிகாட்டி', navLogbook: 'பதிவுகள்',
+        heroTag: 'மண் பரிசோதனை உர மேலாண்மை',
+        heroHeading: 'உங்கள் மண் பரிசோதனைக்கு ஏற்ப சரியான உரம் மற்றும் மூட்டை அளவு.',
+        heroSub: 'ஏக்கர் அளவு, 45/50 கிலோ மூட்டை எண்ணிக்கை, பிரித்து இடும் கால அட்டவணை, மண் pH திருத்தம் மற்றும் மழை எச்சரிக்கை.',
+        heroCta: 'உரக் கணிப்பியைத் திறக்க ↓', heroBatch: 'CSV பதிவேற்றம்',
+        workbenchTitle: 'மண் மற்றும் பயிர் உரப் பரிந்துரை', workbenchSub: 'மண் சத்துக்கள், பரப்பளவு மற்றும் pH அளவை உள்ளிடவும்.',
+        btnReset: 'மீட்டமை', btnPrint: 'அச்சிடு', btnSubmit: 'உரப் பரிந்துரை பெறுக',
+        lblPlot: 'நிலம்', lblCrop: 'பயிர் வகை', lblSoil: 'மண் வகை', lblArea: 'நில அளவு', lblStage: 'பயிர் நிலை',
+        lblTemp: 'வெப்பநிலை (°C)', lblHumidity: 'ஈரப்பதம் (%)', lblMoisture: 'மண் ஈரம் (%)', lblPh: 'மண் pH',
+        lblN: 'நைட்ரஜன் (N)', lblP: 'பாஸ்பரஸ் (P)', lblK: 'பொட்டாசியம் (K)',
+        plotsTitle: 'பண்ணை நிலங்கள் மற்றும் பருவ கண்காணிப்பு', batchTitle: 'ஆய்வக CSV தொகுப்பு பதிவேற்றம்',
+        guideTitle: 'உர வகை வழிகாட்டி', benchTitle: 'மாதிரி துல்லியம் மற்றும் பாதுகாப்பு', logTitle: 'மண் பரிசோதனை பதிவுப் புத்தகம்'
+      },
+      hi: {
+        speechLang: 'hi-IN',
+        brandTitle: 'SSNM उर्वरक सलाहकार',
+        navAdvisor: 'सलाहकार', navPlots: 'खेत प्रोफ़ाइल', navBatch: 'बैच CSV', navGuide: 'उर्वरक गाइड', navLogbook: 'लॉगबुक',
+        heroTag: 'मृदा परीक्षण आधारित पोषण प्रबंधन',
+        heroHeading: 'आपकी मिट्टी की जांच के अनुसार सही उर्वरक और सटीक बोरी गणना।',
+        heroSub: 'प्रति एकड़ मात्रा, 45/50 किग्रा बोरी संख्या, विभाजित खुराक समय-सारणी, मिट्टी का pH सुधार, जैविक विकल्प और वर्षा चेतावनी प्राप्त करें।',
+        heroCta: 'उर्वरक कैलकुलेटर खोलें ↓', heroBatch: 'लैब CSV अपलोड करें',
+        workbenchTitle: 'खेत पोषण परामर्श कार्यक्षेत्र', workbenchSub: 'सटीक उर्वरक सलाह के लिए मिट्टी के मान और क्षेत्रफल दर्ज करें।',
+        btnReset: 'रीसेट करें', btnPrint: 'प्रिंट करें', btnSubmit: 'उर्वरक सलाह प्राप्त करें',
+        lblPlot: 'खेत (प्लॉट)', lblCrop: 'फसल चुनें', lblSoil: 'मिट्टी का प्रकार', lblArea: 'खेत का क्षेत्रफल', lblStage: 'फसल अवस्था',
+        lblTemp: 'तापमान (°C)', lblHumidity: 'नमी (%)', lblMoisture: 'मिट्टी की नमी (%)', lblPh: 'मिट्टी pH',
+        lblN: 'नाइट्रोजन (N)', lblP: 'फास्फोरस (P)', lblK: 'पोटाश (K)',
+        plotsTitle: 'खेत प्रोफ़ाइल और मौसमी ट्रैकिंग', batchTitle: 'लैब CSV बैच अपलोड',
+        guideTitle: 'उर्वरक विवरण गाइड', benchTitle: 'मॉडल पारदर्शिता', logTitle: 'मृदा परीक्षण लॉगबुक'
+      },
+      te: {
+        speechLang: 'te-IN',
+        brandTitle: 'SSNM ఎరువుల సలహాదారు',
+        navAdvisor: 'సలహా', navPlots: 'పొలాలు', navBatch: 'బ్యాచ్ CSV', navGuide: 'ఎరువుల గైడ్', navLogbook: 'లాగ్‌బుక్',
+        heroTag: 'నేల ఆధారిత పోషక నిర్వహణ',
+        heroHeading: 'మీ నేల పరీక్ష ప్రకారం సరైన ఎరువు మరియు బస్తాల లెక్కింపు.',
+        heroSub: 'ఎకరాకు మోతాదు, 45/50 కిలోల బస్తాల సంఖ్య, దశలవారీ షెడ్యూల్, pH సూచనలు మరియు వర్షపు హెచ్చరిక.',
+        heroCta: 'కాలిక్యులేటర్ తెరవండి ↓', heroBatch: 'CSV అప్‌లోడ్',
+        workbenchTitle: 'నేల మరియు పంట పోషక సిఫార్సు', workbenchSub: 'నేల N-P-K విలువలు, విస్తీర్ణం మరియు pH నమోదు చేయండి.',
+        btnReset: 'రీసెట్', btnPrint: 'ప్రింట్', btnSubmit: 'ఎరువుల సలహా పొందండి',
+        lblPlot: 'పొలం', lblCrop: 'పంట రకం', lblSoil: 'నేల రకం', lblArea: 'విస్తీర్ణం', lblStage: 'పంట దశ',
+        lblTemp: 'ఉష్ణోగ్రత (°C)', lblHumidity: 'తేమ (%)', lblMoisture: 'నేల తేమ (%)', lblPh: 'నేల pH',
+        lblN: 'నత్రజని (N)', lblP: 'భాస్వరం (P)', lblK: 'పొటాష్ (K)',
+        plotsTitle: 'పొలాల పర్యవేక్షణ', batchTitle: 'CSV బ్యాచ్ అప్‌లోడ్',
+        guideTitle: 'ఎరువుల వివరాలు', benchTitle: 'మోడల్ వివరాలు', logTitle: 'పరీక్షల లాగ్‌బుక్'
+      },
+      kn: {
+        speechLang: 'kn-IN',
+        brandTitle: 'SSNM ಗೊಬ್ಬರ ಸಲಹೆಗಾರ',
+        navAdvisor: 'ಸಲಹೆ', navPlots: 'ಜಮೀನುಗಳು', navBatch: 'CSV ಬ್ಯಾಚ್', navGuide: 'ಗೊಬ್ಬರ ಮಾರ್ಗದರ್ಶಿ', navLogbook: 'ದಾಖಲೆಗಳು',
+        heroTag: 'ಮಣ್ಣಿನ ಪರೀಕ್ಷೆ ಆಧಾರಿತ ಪೋಷಣೆ',
+        heroHeading: 'ನಿಮ್ಮ ಮಣ್ಣಿನ ಪರೀಕ್ಷೆಗೆ ತಕ್ಕಂತೆ ನಿಖರವಾದ ಗೊಬ್ಬರ ಮತ್ತು ಚೀಲಗಳ ಲೆಕ್ಕಾಚಾರ.',
+        heroSub: 'ಎಕರೆಗೆ ಪ್ರಮಾಣ, 45/50 ಕೆಜಿ ಚೀಲಗಳ ಸಂಖ್ಯೆ, ಹಂತವಾರು ವೇಳಾಪಟ್ಟಿ, ಮಣ್ಣಿನ pH ಸಲಹೆ ಮತ್ತು ಮಳೆ ಎಚ್ಚರಿಕೆ.',
+        heroCta: 'ಕ್ಯಾಲ್ಕುಲೇಟರ್ ತೆರೆಯಿರಿ ↓', heroBatch: 'CSV ಅಪ್‌ಲೋಡ್',
+        workbenchTitle: 'ಮಣ್ಣು ಮತ್ತು ಬೆಳೆ ಗೊಬ್ಬರ ಶಿಫಾರಸು', workbenchSub: 'ಮಣ್ಣಿನ N-P-K ಮೌಲ್ಯಗಳು ಮತ್ತು ವಿಸ್ತೀರ್ಣವನ್ನು ನಮೂದಿಸಿ.',
+        btnReset: 'ಮರುಹೊಂದಿಸಿ', btnPrint: 'ಮುದ್ರಿಸಿ', btnSubmit: 'ಶಿಫಾರಸು ಪಡೆಯಿರಿ',
+        lblPlot: 'ಜಮೀನು', lblCrop: 'ಬೆಳೆ', lblSoil: 'ಮಣ್ಣಿನ ವಿಧ', lblArea: 'ವಿಸ್ತೀರ್ಣ', lblStage: 'ಬೆಳೆ ಹಂತ',
+        lblTemp: 'ತಾಪಮಾನ (°C)', lblHumidity: 'ಆರ್ದ್ರತೆ (%)', lblMoisture: 'ಮಣ್ಣಿನ ತೇವಾಂಶ (%)', lblPh: 'ಮಣ್ಣಿನ pH',
+        lblN: 'ಸಾರಜನಕ (N)', lblP: 'ರಂಜಕ (P)', lblK: 'ಪೊಟ್ಯಾಷ್ (K)',
+        plotsTitle: 'ಜಮೀನುಗಳ ಟ್ರ್ಯಾಕಿಂಗ್', batchTitle: 'CSV ಬ್ಯಾಚ್ ವಿಶ್ಲೇಷಣೆ',
+        guideTitle: 'ಗೊಬ್ಬರ ಮಾಹಿತಿ', benchTitle: 'ಮಾದರಿ ನಿಖರತೆ', logTitle: 'ಪರೀಕ್ಷಾ ದಾಖಲೆಗಳು'
+      },
+      ml: {
+        speechLang: 'ml-IN',
+        brandTitle: 'SSNM വളം ഉപദേഷ്ടാവ്',
+        navAdvisor: 'ഉപദേശം', navPlots: 'കൃഷിയിടം', navBatch: 'CSV ബാച്ച്', navGuide: 'വളം ഗൈഡ്', navLogbook: 'ലോഗ്‌ബുക്ക്',
+        heroTag: 'മണ്ണ് പരിശോധന അധിഷ്ഠിത പോഷണം',
+        heroHeading: 'നിങ്ങളുടെ മണ്ണിന് അനുയോജ്യമായ വളവും കൃത്യമായ ചാക്കുകളുടെ എണ്ണവും.',
+        heroSub: 'ഏക്കറിനുള്ള അളവ്, 45/50 കിലോ ചാക്ക് കണക്ക്, ഘട്ടം തിരിച്ചുള്ള വിതരണം, pH നിർദ്ദേശങ്ങൾ, മഴ മുന്നറിയിപ്പ്.',
+        heroCta: 'കാൽക്കുലേറ്റർ തുറക്കുക ↓', heroBatch: 'CSV അപ്‌ലോഡ്',
+        workbenchTitle: 'വളം ശുപാർശ വർക്ക്‌ബെഞ്ച്', workbenchSub: 'മണ്ണിലെ N-P-K അളവുകളും വിസ്തീർണ്ണവും നൽകുക.',
+        btnReset: 'റീസെറ്റ്', btnPrint: 'പ്രിന്റ്', btnSubmit: 'ശുപാർശ തയ്യാറാക്കുക',
+        lblPlot: 'കൃഷിയിടം', lblCrop: 'വിള', lblSoil: 'മണ്ണിനം', lblArea: 'വിസ്തീർണ്ണം', lblStage: 'വിള ഘട്ടം',
+        lblTemp: 'താപനില (°C)', lblHumidity: 'ഈർപ്പം (%)', lblMoisture: 'മണ്ണിലെ ഈർപ്പം (%)', lblPh: 'മണ്ണ് pH',
+        lblN: 'നൈട്രജൻ (N)', lblP: 'ഫോസ്ഫറസ് (P)', lblK: 'പൊട്ടാസ്യം (K)',
+        plotsTitle: 'കൃഷിയിട ട്രാക്കിംഗ്', batchTitle: 'CSV ബാച്ച് അപ്‌ലോഡ്',
+        guideTitle: 'വളങ്ങളുടെ പട്ടിക', benchTitle: 'മോഡൽ കൃത്യത', logTitle: 'പരിശോധനാ രേഖകൾ'
+      }
+    };
+
+    const OFFLINE_QUEUE_KEY = 'ssnm_offline_queue_v1';
+    let currentLang = 'en';
+    let appMeta = null;
+    let allHistory = [];
+    let allPlots = [];
+    let lastAdvisory = null;
+    let latestWeather = null;
+
+    function applyTranslations(lang) {
+      currentLang = I18N[lang] ? lang : 'en';
+      const dict = I18N[currentLang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) el.textContent = dict[key];
+      });
+    }
+
+    document.getElementById('langSelect').addEventListener('change', e => applyTranslations(e.target.value));
+
+    const syncPairs = [
+      ['temperature', 'temperatureRange'],
+      ['humidity', 'humidityRange'],
+      ['moisture', 'moistureRange'],
+      ['soilPh', 'soilPhRange'],
+      ['nitrogen', 'nitrogenRange'],
+      ['phosphorous', 'phosphorousRange'],
+      ['potassium', 'potassiumRange']
+    ];
+
+    function updateNpkPreview() {
+      const n = Math.max(0, Number(document.getElementById('nitrogen').value) || 0);
+      const p = Math.max(0, Number(document.getElementById('phosphorous').value) || 0);
+      const k = Math.max(0, Number(document.getElementById('potassium').value) || 0);
+      const total = n + p + k;
+      document.getElementById('npkSummaryText').textContent = `N: ${n} | P: ${p} | K: ${k}`;
+      if (total <= 0) {
+        document.getElementById('barN').style.width = '33.3%';
+        document.getElementById('barP').style.width = '33.3%';
+        document.getElementById('barK').style.width = '33.4%';
+      } else {
+        document.getElementById('barN').style.width = `${(n / total) * 100}%`;
+        document.getElementById('barP').style.width = `${(p / total) * 100}%`;
+        document.getElementById('barK').style.width = `${(k / total) * 100}%`;
+      }
+    }
+
+    syncPairs.forEach(([numId, rangeId]) => {
+      const numEl = document.getElementById(numId);
+      const rangeEl = document.getElementById(rangeId);
+      numEl.addEventListener('input', () => { rangeEl.value = numEl.value; updateNpkPreview(); });
+      rangeEl.addEventListener('input', () => { numEl.value = rangeEl.value; updateNpkPreview(); });
+    });
+
+    function setSoil(soilName) {
+      document.getElementById('soilType').value = soilName;
+      document.querySelectorAll('.soil-pill').forEach(btn => btn.classList.toggle('active', btn.dataset.soil === soilName));
+    }
+
+    function applyScenario(p, idx, persist = true) {
+      document.querySelectorAll('#presetBar .chip').forEach((c, i) => c.classList.toggle('active', i === idx));
+      setSoil(p.soil_type);
+      document.getElementById('cropType').value = p.crop_type;
+      document.getElementById('areaVal').value = p.area || 2.0;
+      document.getElementById('areaUnit').value = p.area_unit || 'acre';
+      document.getElementById('cropStage').value = p.crop_stage || 'sowing';
+      const fields = {
+        temperature: p.temperature, humidity: p.humidity, moisture: p.moisture,
+        soilPh: p.soil_ph || 6.5, nitrogen: p.nitrogen, phosphorous: p.phosphorous, potassium: p.potassium
+      };
+      Object.entries(fields).forEach(([id, val]) => {
+        document.getElementById(id).value = val;
+        document.getElementById(id + 'Range').value = val;
+      });
+      updateNpkPreview();
+      runPrediction(persist);
+    }
+
+    window.resetForm = () => {
+      if (appMeta && appMeta.presets.length) applyScenario(appMeta.presets[0], 0, false);
+    };
+
+    // ----- Offline Queue & PWA -----
+    function getOfflineQueue() {
+      try { return JSON.parse(localStorage.getItem(OFFLINE_QUEUE_KEY) || '[]'); } catch { return []; }
+    }
+    function saveOfflineQueue(q) {
+      localStorage.setItem(OFFLINE_QUEUE_KEY, JSON.stringify(q));
+      const btn = document.getElementById('syncQueueBtn');
+      btn.style.display = q.length > 0 ? 'inline-flex' : 'none';
+      btn.textContent = `Sync Queued (${q.length})`;
+    }
+    function updateNetworkUI() {
+      const pill = document.getElementById('networkPill');
+      const online = navigator.onLine;
+      pill.classList.toggle('offline', !online);
+      pill.innerHTML = `<span class="dot"></span> ${online ? 'Online' : 'Offline Mode'}`;
+    }
+    window.syncOfflineQueue = async () => {
+      const queue = getOfflineQueue();
+      if (!queue.length) return;
+      const remaining = [];
+      for (const item of queue) {
+        try {
+          const res = await fetch('/api/predict', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(item)
+          });
+          if (!res.ok) remaining.push(item);
+        } catch {
+          remaining.push(item);
+        }
+      }
+      saveOfflineQueue(remaining);
+      await loadHistory();
+      await loadPlots();
+    };
+    window.addEventListener('online', () => { updateNetworkUI(); syncOfflineQueue(); });
+    window.addEventListener('offline', updateNetworkUI);
+
+    // ----- Weather Advisory -----
+    function renderWeather(data) {
+      latestWeather = data;
+      const box = document.getElementById('weatherBox');
+      box.className = `weather-box weather-risk-${data.rain_risk.level}`;
+      document.getElementById('weatherResult').innerHTML = `
+        <strong>${data.location}:</strong> ${data.rain_risk.headline} —
+        <span>${data.rain_risk.advice}</span>
+      `;
+    }
+    window.checkCityWeather = async () => {
+      const city = document.getElementById('weatherCity').value.trim();
+      if (!city) return;
+      document.getElementById('weatherResult').textContent = 'Checking Open-Meteo 24h forecast...';
+      try {
+        const res = await fetch(`/api/weather?city=${encodeURIComponent(city)}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Location lookup failed');
+        renderWeather(data);
+      } catch (err) {
+        document.getElementById('weatherResult').textContent = err.message;
+      }
+    };
+    window.checkGpsWeather = () => {
+      if (!navigator.geolocation) {
+        document.getElementById('weatherResult').textContent = 'Geolocation unavailable in this browser.';
+        return;
+      }
+      document.getElementById('weatherResult').textContent = 'Reading coordinates...';
+      navigator.geolocation.getCurrentPosition(async pos => {
+        try {
+          const res = await fetch(`/api/weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error);
+          renderWeather(data);
+        } catch (err) {
+          document.getElementById('weatherResult').textContent = err.message;
+        }
+      }, err => {
+        document.getElementById('weatherResult').textContent = `GPS denied: ${err.message}`;
+      });
+    };
+
+    // ----- Prescription Rendering, Voice Readout & Share -----
+    function buildShareMessage(data) {
+      const calc = data.dosage_calculator;
+      const prof = data.fertilizer_profile;
+      const stages = data.split_schedule.map(s => `- ${s.label} (${s.timing}): ${s.amount_kg} kg (${s.pct}%)`).join('\n');
+      const weatherNote = latestWeather ? `\nWeather (${latestWeather.location}): ${latestWeather.rain_risk.headline}` : '';
+      return [
+        `SSNM Field Prescription — ${data.input.Crop_Type} (${data.input.Soil_Type}, ${calc.area_acres} acres)`,
+        `Recommended Fertilizer: ${prof.name} [NPK ${prof.npk_ratio}] (${data.prediction.confidence_pct}% match)`,
+        `Total Required: ${calc.total_kg} kg (~${calc.exact_bags} x ${calc.bag_weight_kg} kg bags | Buy ${calc.recommended_bags_to_buy} bags)`,
+        `Estimated Cost: ₹${calc.estimated_cost_inr} (${calc.price_basis})`,
+        `Soil pH ${data.input.soil_ph}: ${data.diagnostics.ph_analysis.status}`,
+        `Split Schedule:\n${stages}${weatherNote}`
+      ].join('\n');
+    }
+
+    window.readAloudPrescription = () => {
+      if (!lastAdvisory || !('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const d = lastAdvisory;
+      const calc = d.dosage_calculator;
+      const text = `Recommendation for ${d.input.Crop_Type} on ${calc.area_acres} acres of ${d.input.Soil_Type} soil: Apply ${d.fertilizer_profile.name}, total ${calc.total_kg} kilograms, about ${calc.recommended_bags_to_buy} bags of ${calc.bag_weight_kg} kilograms each. Estimated cost rupees ${Math.round(calc.estimated_cost_inr)}. Soil pH is ${d.input.soil_ph}, ${d.diagnostics.ph_analysis.status}.`;
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.lang = I18N[currentLang].speechLang || 'en-IN';
+      window.speechSynthesis.speak(utt);
+    };
+
+    window.copyPrescriptionSms = async () => {
+      if (!lastAdvisory) return;
+      const msg = buildShareMessage(lastAdvisory);
+      await navigator.clipboard.writeText(msg);
+      alert('Field prescription text copied to clipboard!');
+    };
+
+    window.shareWhatsApp = () => {
+      if (!lastAdvisory) return;
+      const msg = encodeURIComponent(buildShareMessage(lastAdvisory));
+      window.open(`https://wa.me/?text=${msg}`, '_blank');
+    };
+
+    async function runPrediction(persist = true) {
+      const errEl = document.getElementById('errorMsg');
+      errEl.textContent = '';
+
+      const customPriceRaw = document.getElementById('customPrice').value;
+      const plotVal = document.getElementById('plotSelect').value;
+      const payload = {
+        plot_id: plotVal ? Number(plotVal) : null,
+        soil_type: document.getElementById('soilType').value,
+        crop_type: document.getElementById('cropType').value,
+        area: Number(document.getElementById('areaVal').value),
+        area_unit: document.getElementById('areaUnit').value,
+        crop_stage: document.getElementById('cropStage').value,
+        custom_bag_price_inr: customPriceRaw ? Number(customPriceRaw) : null,
+        temperature: Number(document.getElementById('temperature').value),
+        humidity: Number(document.getElementById('humidity').value),
+        moisture: Number(document.getElementById('moisture').value),
+        soil_ph: Number(document.getElementById('soilPh').value),
+        nitrogen: Number(document.getElementById('nitrogen').value),
+        phosphorous: Number(document.getElementById('phosphorous').value),
+        potassium: Number(document.getElementById('potassium').value),
+        persist
+      };
+
+      try {
+        const res = await fetch('/api/predict', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) { errEl.textContent = data.error || 'Prediction failed'; return; }
+        renderPrescription(data);
+        if (persist) {
+          await loadHistory();
+          await loadPlots();
+          if (payload.plot_id) await loadPlotTrends(payload.plot_id);
+        }
+      } catch {
+        if (persist) {
+          const q = getOfflineQueue();
+          q.push(payload);
+          saveOfflineQueue(q);
+          errEl.textContent = 'Network offline: soil reading queued locally and will auto-sync when online.';
+        }
+      }
+    }
+
+    function renderPrescription(data) {
+      lastAdvisory = data;
+      const prof = data.fertilizer_profile;
+      const calc = data.dosage_calculator;
+      const nut = data.diagnostics.nutrients;
+      const ph = data.diagnostics.ph_analysis;
+      const pred = data.prediction;
+      const rxLabel = data.record_id ? `Field Prescription #${data.record_id}` : 'Sample Preview';
+
+      const oodHtml = pred.safety_warning ? `
+        <div class="ood-banner">
+          <strong>⚠ Lab Verification Advised:</strong> ${pred.safety_message}
+          <div style="font-size:0.78rem;margin-top:0.25rem;">${pred.warning_reasons.join(' • ')}</div>
+        </div>
+      ` : '';
+
+      const altHtml = calc.lower_cost_alternative ? `
+        <div style="margin-top:0.65rem;padding:0.65rem 0.8rem;border-radius:10px;background:#ecfdf5;border:1px solid #a7f3d0;font-size:0.82rem;">
+          <strong>Lower-Cost Candidate:</strong> ${calc.lower_cost_alternative.fertilizer} (${calc.lower_cost_alternative.confidence_pct}% model match)
+          — ~${calc.lower_cost_alternative.exact_bags} × ${calc.lower_cost_alternative.bag_weight_kg} kg bags ≈ <b>₹${calc.lower_cost_alternative.estimated_cost_inr}</b>
+          (saves ~₹${calc.lower_cost_alternative.savings_inr})
+        </div>
+      ` : '';
+
+      document.getElementById('prescriptionPanel').innerHTML = `
+        ${oodHtml}
+        <div class="rx-header">
+          <div>
+            <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;color:var(--leaf);">
+              ${rxLabel} • ${data.input.Crop_Type} (${data.input.Soil_Type}, ${calc.area_acres} acres)
+            </div>
+            <div class="rx-title">${prof.name}</div>
+            <div style="font-size:0.86rem;color:var(--muted);"><b>${prof.focus}</b> — ${prof.notes}</div>
+          </div>
+          <div style="text-align:right;">
+            <span class="rx-badge">NPK ${prof.npk_ratio}</span>
+            <div style="font-size:0.8rem;font-weight:700;color:var(--forest);margin-top:0.4rem;">${pred.confidence_pct}% match</div>
+          </div>
+        </div>
+
+        <div class="rx-actions" style="display:flex;gap:0.45rem;flex-wrap:wrap;margin-top:0.75rem;">
+          <button type="button" class="btn-soft" onclick="readAloudPrescription()">🔊 Read Aloud</button>
+          <button type="button" class="btn-whatsapp" onclick="shareWhatsApp()">Share on WhatsApp</button>
+          <button type="button" class="btn-soft" onclick="copyPrescriptionSms()">Copy SMS Text</button>
+        </div>
+
+        <!-- Dosage & Bag Calculator -->
+        <div class="calc-grid">
+          <div class="calc-card">
+            <div class="calc-val">${calc.total_kg} kg</div>
+            <div class="calc-lbl">Total (${calc.kg_per_acre} kg/acre)</div>
+          </div>
+          <div class="calc-card">
+            <div class="calc-val">${calc.recommended_bags_to_buy} bags</div>
+            <div class="calc-lbl">Buy (${calc.exact_bags} × ${calc.bag_weight_kg} kg)</div>
+          </div>
+          <div class="calc-card">
+            <div class="calc-val">₹${Math.round(calc.estimated_cost_inr)}</div>
+            <div class="calc-lbl">Est. Input Cost</div>
+          </div>
+        </div>
+        <div style="font-size:0.74rem;color:var(--muted);margin-top:0.35rem;">Pricing basis: ${calc.price_basis}</div>
+        ${altHtml}
+
+        <!-- Split Schedule -->
+        <div style="margin-top:0.95rem;">
+          <div style="font-size:0.83rem;font-weight:700;color:var(--forest);">Split-Application Calendar (${data.input.Crop_Type})</div>
+          <div class="timeline">
+            ${data.split_schedule.map(s => `
+              <div class="stage-row ${s.is_current_stage ? 'current' : ''}">
+                <div>
+                  <strong>${s.label}</strong> <small style="color:var(--muted);">(${s.timing})</small>
+                  ${s.is_current_stage ? '<span class="pill" style="padding:0.1rem 0.45rem;font-size:0.68rem;">Current Stage</span>' : ''}
+                  <div style="color:var(--muted);font-size:0.78rem;margin-top:0.15rem;">${s.action}</div>
+                </div>
+                <div style="text-align:right;white-space:nowrap;">
+                  <strong>${s.amount_kg} kg</strong><br><small style="color:var(--muted);">${s.pct}%</small>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- Soil N-P-K & pH -->
+        <div style="margin-top:0.95rem;">
+          <div style="font-size:0.83rem;font-weight:700;color:var(--forest);">Soil N-P-K Balance &amp; pH Lockout Check</div>
+          <div class="diag-grid">
+            ${Object.entries(nut).map(([k, v]) => `
+              <div class="diag-card">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <strong>${k} = ${v.value}</strong>
+                  <span class="badge-status st-${v.status}">${v.status}</span>
+                </div>
+                <div style="font-size:0.74rem;color:var(--muted);margin-top:0.3rem;">Target: ${v.target_min}–${v.target_max}</div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="dosage-box" style="margin-top:0.65rem;">
+            <strong>Soil pH ${ph.ph} (${ph.status}):</strong> ${ph.advice}
+          </div>
+        </div>
+
+        ${data.diagnostics.alerts.map(msg => `
+          <div class="dosage-box" style="border-left-color:var(--crimson);background:var(--crimson-bg);color:#7f1d1d;margin-top:0.65rem;">
+            <strong>Field Caution:</strong> ${msg}
+          </div>
+        `).join('')}
+
+        <!-- Organic & Bio-Fertilizer Pairings -->
+        <div style="margin-top:0.95rem;">
+          <div style="font-size:0.83rem;font-weight:700;color:var(--forest);">Organic &amp; Bio-Fertilizer Substitution Guide</div>
+          <div class="timeline">
+            ${data.organic_alternatives.map(o => `
+              <div class="stage-row">
+                <div>
+                  <strong>${o.option}</strong> <small class="pill" style="padding:0.08rem 0.45rem;font-size:0.68rem;">${o.target}</small>
+                  <div style="color:var(--muted);font-size:0.78rem;margin-top:0.15rem;"><b>Rate:</b> ${o.rate} — ${o.benefit}</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ----- Farm Plots & Multi-Season SVG Chart -----
+    async function loadPlots() {
+      const res = await fetch('/api/plots');
+      const data = await res.json();
+      allPlots = data.plots || [];
+
+      const select = document.getElementById('plotSelect');
+      const prevVal = select.value;
+      select.innerHTML = '<option value="">Ad-hoc / No Plot Selected</option>' +
+        allPlots.map(p => `<option value="${p.id}">${p.name} (${p.area_acres} ac • ${p.soil_type})</option>`).join('');
+      if (prevVal) select.value = prevVal;
+
+      document.getElementById('plotList').innerHTML = allPlots.map(p => `
+        <div class="stage-row">
+          <div>
+            <strong>${p.name}</strong> <small style="color:var(--muted);">(${p.area_acres} ac • ${p.soil_type}${p.location ? ' • ' + p.location : ''})</small>
+            <div style="font-size:0.76rem;color:var(--muted);">${p.test_count} logged soil test(s)</div>
+          </div>
+          <div style="display:flex;gap:0.35rem;">
+            <button type="button" class="btn-soft" onclick="loadPlotTrends(${p.id})">View Trend</button>
+            <button type="button" class="btn-soft" onclick="removePlot(${p.id})">Delete</button>
+          </div>
+        </div>
+      `).join('') || '<div style="color:var(--muted);font-size:0.84rem;">No plots added yet.</div>';
+    }
+
+    window.loadPlotTrends = async plotId => {
+      const res = await fetch(`/api/plots/${plotId}/trends`);
+      if (!res.ok) return;
+      const data = await res.json();
+      document.getElementById('trendTitle').textContent = `Multi-Season N-P-K Trend — ${data.plot.name}`;
+      const pts = data.trends || [];
+      if (!pts.length) {
+        document.getElementById('plotTrendPanel').innerHTML = '<p>No soil tests recorded for this plot yet. Select this plot in the Advisor Tool and submit a reading.</p>';
+        return;
+      }
+
+      const w = 520, h = 180, pad = 28;
+      const maxVal = Math.max(80, ...pts.flatMap(p => [p.nitrogen, p.phosphorous, p.potassium]));
+      const xStep = pts.length > 1 ? (w - pad * 2) / (pts.length - 1) : 0;
+      const linePath = key => pts.map((p, i) => {
+        const x = pts.length === 1 ? w / 2 : pad + i * xStep;
+        const y = h - pad - ((p[key] / maxVal) * (h - pad * 2));
+        return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
+      }).join(' ');
+
+      document.getElementById('plotTrendPanel').innerHTML = `
+        <svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto;background:#fcfdfb;border:1px solid var(--border);border-radius:12px;">
+          <path d="${linePath('nitrogen')}" fill="none" stroke="#16a34a" stroke-width="2.5" />
+          <path d="${linePath('phosphorous')}" fill="none" stroke="#d97706" stroke-width="2.5" />
+          <path d="${linePath('potassium')}" fill="none" stroke="#2563eb" stroke-width="2.5" />
+        </svg>
+        <div style="display:flex;gap:1rem;font-size:0.78rem;margin:0.45rem 0 0.75rem;">
+          <span><b style="color:#16a34a;">—</b> Nitrogen</span>
+          <span><b style="color:#d97706;">—</b> Phosphorous</span>
+          <span><b style="color:#2563eb;">—</b> Potassium</span>
+        </div>
+        <table>
+          <thead><tr><th>Crop</th><th>N-P-K</th><th>pH</th><th>Fertilizer</th><th>Bags / Est.</th></tr></thead>
+          <tbody>
+            ${pts.map(p => `<tr><td>${p.crop_type}</td><td>${p.nitrogen}/${p.phosphorous}/${p.potassium}</td><td>${p.soil_ph}</td><td>${p.recommended_fertilizer}</td><td>${p.bags_required} bags (₹${Math.round(p.estimated_cost_inr)})</td></tr>`).join('')}
+          </tbody>
+        </table>
+      `;
+    };
+
+    window.removePlot = async id => {
+      await fetch(`/api/plots/${id}`, { method: 'DELETE' });
+      await loadPlots();
+    };
+
+    document.getElementById('plotForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      await fetch('/api/plots', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: document.getElementById('newPlotName').value,
+          location: document.getElementById('newPlotLocation').value,
+          area_acres: Number(document.getElementById('newPlotArea').value),
+          soil_type: document.getElementById('newPlotSoil').value
+        })
+      });
+      document.getElementById('newPlotName').value = '';
+      await loadPlots();
+    });
+
+    // ----- Batch CSV Upload -----
+    window.downloadSampleCsv = () => {
+      const sample = [
+        'Plot_Name,Temperature,Humidity,Moisture,Soil_Type,Crop_Type,Nitrogen,Potassium,Phosphorous,Soil_pH,Area_Acres',
+        'North Paddy,28,54,41,Clayey,Paddy,36,0,0,6.4,2.5',
+        'South Cotton,32,62,44,Black,Cotton,14,10,38,7.7,3.0',
+        'Orchard Block,27,58,40,Red,Pomegranate,18,28,24,5.3,1.5'
+      ].join('\n');
+      const blob = new Blob([sample], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'sample_soil_batch.csv';
+      a.click();
+    };
+
+    window.runBatchUpload = async downloadCsv => {
+      const fileInput = document.getElementById('batchFile');
+      if (!fileInput.files.length) {
+        document.getElementById('batchResults').innerHTML = '<p style="color:var(--crimson);">Select a CSV file first.</p>';
+        return;
+      }
+      const fd = new FormData();
+      fd.append('file', fileInput.files[0]);
+      const url = downloadCsv ? '/api/batch-predict?format=csv' : '/api/batch-predict';
+      const res = await fetch(url, { method: 'POST', body: fd });
+      if (downloadCsv && res.ok) {
+        const text = await res.text();
+        const blob = new Blob([text], { type: 'text/csv' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'batch_fertilizer_recommendations.csv';
+        a.click();
+        return;
+      }
+      const data = await res.json();
+      if (!res.ok) {
+        document.getElementById('batchResults').innerHTML = `<p style="color:var(--crimson);">${data.error}</p>`;
+        return;
+      }
+      document.getElementById('batchResults').innerHTML = `
+        <div style="font-size:0.84rem;margin-bottom:0.5rem;">Processed <b>${data.processed_count}</b> samples (${data.error_count} errors).</div>
+        <table>
+          <thead><tr><th>Sample</th><th>Crop / Soil</th><th>Fertilizer</th><th>Conf</th><th>Dosage &amp; Bags</th><th>Deficient</th></tr></thead>
+          <tbody>
+            ${data.results.map(r => `
+              <tr>
+                <td><b>${r.plot_name}</b></td>
+                <td>${r.crop_type} (${r.soil_type}, ${r.area_acres} ac)</td>
+                <td><span class="pill">${r.recommended_fertilizer}</span>${r.safety_warning ? ' ⚠' : ''}</td>
+                <td>${r.confidence_pct}%</td>
+                <td>${r.total_kg} kg (${r.bags_to_buy} bags • ₹${Math.round(r.estimated_cost_inr)})</td>
+                <td>${r.deficient_nutrients}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    };
+
+    // ----- Guide & History -----
+    function renderCatalog(filter = 'all') {
+      if (!appMeta) return;
+      const items = appMeta.fertilizer_catalog.filter(item => {
+        if (filter === 'all') return true;
+        if (filter === 'N') return item.focus.includes('Nitrogen') && !item.focus.includes('Starter');
+        if (filter === 'P') return item.focus.includes('Phosphorous') && !item.focus.includes('Potassium');
+        return item.focus.includes('Potassium') || item.focus.includes('Complete');
+      });
+      document.getElementById('catalogGrid').innerHTML = items.map(item => `
+        <article class="fert-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:0.4rem;">
+            <strong style="color:var(--forest);">${item.name}</strong>
+            <span class="pill">${item.npk_ratio}</span>
+          </div>
+          <div style="font-size:0.8rem;font-weight:700;color:var(--leaf);">${item.focus}</div>
+          <p style="margin:0;font-size:0.83rem;color:var(--muted);">${item.notes}</p>
+          <div style="font-size:0.78rem;background:var(--surface-soft);padding:0.45rem 0.6rem;border-radius:8px;margin-top:auto;">
+            <strong>${item.bag_weight_kg} kg bag:</strong> ~₹${item.ref_price_inr} • ${item.dosage_hint}
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function renderHistoryTable() {
+      const q = (document.getElementById('logSearch').value || '').trim().toLowerCase();
+      const filtered = allHistory.filter(item =>
+        !q || item.crop_type.toLowerCase().includes(q) || item.soil_type.toLowerCase().includes(q) ||
+        item.recommended_fertilizer.toLowerCase().includes(q) || (item.plot_name || '').toLowerCase().includes(q)
+      );
+      document.getElementById('historyBody').innerHTML = filtered.map(item => `
+        <tr>
+          <td style="color:var(--muted);font-size:0.78rem;">${item.created_at.slice(0, 19).replace('T', ' ')}</td>
+          <td><strong>${item.plot_name || item.crop_type}</strong><br><small style="color:var(--muted);">${item.crop_type} • ${item.soil_type}</small></td>
+          <td>${item.area_acres} ac • pH ${item.soil_ph}</td>
+          <td>${item.nitrogen}/${item.phosphorous}/${item.potassium}</td>
+          <td><span class="pill">${item.recommended_fertilizer}</span> <small>${item.bags_required} bags (₹${Math.round(item.estimated_cost_inr)})</small></td>
+          <td><b>${item.confidence_pct}%</b></td>
+          <td><button type="button" class="btn-soft" onclick="deleteEntry(${item.id})">Delete</button></td>
+        </tr>
+      `).join('') || '<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:1.25rem;">No logs yet.</td></tr>';
+    }
+
+    async function loadHistory() {
+      const res = await fetch('/api/history?limit=30');
+      const data = await res.json();
+      allHistory = data.items || [];
+      document.getElementById('statLogs').textContent = String(allHistory.length);
+      renderHistoryTable();
+    }
+    window.deleteEntry = async id => { await fetch(`/api/history/${id}`, { method: 'DELETE' }); await loadHistory(); await loadPlots(); };
+
+    async function bootstrap() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      }
+      updateNetworkUI();
+      saveOfflineQueue(getOfflineQueue());
+
+      const res = await fetch('/api/metadata');
+      appMeta = await res.json();
+
+      document.getElementById('soilPills').innerHTML = appMeta.soils.map(s => `<button type="button" class="soil-pill" data-soil="${s}">${s}</button>`).join('');
+      document.querySelectorAll('.soil-pill').forEach(btn => btn.addEventListener('click', () => setSoil(btn.dataset.soil)));
+      setSoil('Clayey');
+
+      document.getElementById('newPlotSoil').innerHTML = appMeta.soils.map(s => `<option value="${s}">${s}</option>`).join('');
+      document.getElementById('cropType').innerHTML = appMeta.crops.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      document.getElementById('presetBar').innerHTML = appMeta.presets.map((p, idx) =>
+        `<button type="button" class="chip" data-idx="${idx}">${p.label}</button>`
+      ).join('');
+      document.querySelectorAll('#presetBar .chip').forEach(btn => {
+        btn.addEventListener('click', () => applyScenario(appMeta.presets[Number(btn.dataset.idx)], Number(btn.dataset.idx), true));
+      });
+
+      const metrics = appMeta.model_metrics;
+      const top = metrics.benchmarks[0];
+      document.getElementById('navModelStatus').textContent = `${metrics.selected_model} • Ready`;
+      document.getElementById('heroCvPill').textContent = `${metrics.cv_folds}-Fold CV: ${top.cv_accuracy_mean}%`;
+      document.getElementById('statCrops').textContent = String(appMeta.crops.length);
+      document.getElementById('statFerts').textContent = String(appMeta.fertilizers.length);
+      document.getElementById('statAcc').textContent = `${top.unique_row_holdout_accuracy}%`;
+
+      document.getElementById('benchmarkTable').innerHTML = `
+        <table>
+          <thead><tr><th>Model</th><th>CV Acc</th><th>Holdout</th><th>Unique-Row</th><th>Macro F1</th></tr></thead>
+          <tbody>
+            ${metrics.benchmarks.map(b => `<tr><td><b>${b.model}</b></td><td>${b.cv_accuracy_mean}%</td><td>${b.holdout_accuracy}%</td><td><b>${b.unique_row_holdout_accuracy}%</b></td><td>${b.holdout_macro_f1}%</td></tr>`).join('')}
+          </tbody>
+        </table>
+      `;
+      document.getElementById('featureDrivers').innerHTML = metrics.feature_importance.map(f => `
+        <div style="margin-bottom:0.5rem;">
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;"><span><b>${f.feature}</b></span><span>${f.importance}%</span></div>
+          <div class="prog-track"><div class="prog-fill" style="width:${f.importance}%;"></div></div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('#guideTabs .chip').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('#guideTabs .chip').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          renderCatalog(tab.dataset.filter);
+        });
+      });
+
+      document.getElementById('logSearch').addEventListener('input', renderHistoryTable);
+      document.getElementById('predictForm').addEventListener('submit', async e => { e.preventDefault(); await runPrediction(true); });
+
+      renderCatalog('all');
+      await loadPlots();
+      await loadHistory();
+      applyScenario(appMeta.presets[0], 0, false);
+    }
+
+    bootstrap();
+  </script>
+</body>
+</html>

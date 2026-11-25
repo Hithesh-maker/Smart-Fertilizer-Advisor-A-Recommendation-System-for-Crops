@@ -1,0 +1,16 @@
+{
+  "name": "SSNM Field Advisor",
+  "short_name": "SSNM Advisor",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafbf7",
+  "theme_color": "#174e2d",
+  "description": "Precision crop fertilizer advisor with offline queuing, N-P-K diagnostics, and multi-season farm tracking.",
+  "icons": [
+    {
+      "src": "/static/images/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ]
+}
